@@ -19,7 +19,16 @@ jobs:
         run: |
           echo "Planning things"
           (exit $EXIT_CODE)
-          echo "tfplan_exit=$" >> $GITHUB_OUTPUT
+          exit_code=$?
+          if [ "$exit_code" -eq 0 ]; then
+            echo "No changes."
+          elif [ "$exit_code" -eq 2 ]; then
+            echo "Changes present."
+          else
+            echo "Terraform error."
+            exit 1
+          fi
+          echo "tfplan_exit=$exit_code" >> $GITHUB_OUTPUT
         env:
           EXIT_CODE: ${{ github.event.inputs.exit_code }}
     outputs:
