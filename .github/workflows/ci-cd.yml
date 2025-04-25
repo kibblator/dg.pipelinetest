@@ -23,7 +23,7 @@ jobs:
         env:
           EXIT_CODE: ${{ github.event.inputs.exit_code }}
     outputs:
-      exit_code: ${{ steps.plan_tf.outputs.exit_code }}
+      exit_code: ${{ steps.plan_tf.outputs.tfplan_exit }}
 
   deploy:
     environment:
