@@ -1,0 +1,50 @@
+name: Main Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      exit_code:
+        required: true
+        default: "0"
+        description: The exit code when running the pipeline
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    name: Plan TF
+    steps:
+      - name: Run with specific exit code
+        id: plan_tf
+        run: |
+          echo "Planning things"
+          (exit $EXIT_CODE)
+          exit_code=$?
+          echo "tfplan_exit=$exit_code" >> $GITHUB_OUTPUT
+        env:
+          EXIT_CODE: ${{ github.event.inputs.exit_code }}
+    outputs:
+      exit_code: ${{ steps.plan_tf.outputs.exit_code }}
+
+  deploy:
+    environment:
+      name: staging
+    runs-on: ubuntu-latest
+    needs: plan
+    name: Deploy TF
+    if: needs.plan.outputs.exit_code == '3'
+    steps:
+      - name: Deploy TF
+        id: deploy_tf
+        run: |
+          echo "Deploying things"
+
+  other:
+    runs-on: ubuntu-latest
+    needs: [plan, deploy]
+    name: Deploy TF
+    if: always() && needs.plan.result == 'success' && (needs.deploy.result == 'success' || needs.deploy.result == 'skipped')
+    steps:
+      - name: Deploy TF
+        id: deploy_tf
+        run: |
+          echo "Deploying things"
