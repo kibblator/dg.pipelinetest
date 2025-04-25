@@ -21,25 +21,10 @@ jobs:
         run: |
           echo "Planning things"
           ./mock-terraform.sh ${{ github.event.inputs.exit_code }}
+          echo "tfplan_exit=$?" >> $GITHUB_OUTPUT
         continue-on-error: true
-
-      - name: Run with specific exit code
-        id: plan_tf
-        run: |
-          code=$?
-          if [ "$code" -eq 0 ]; then
-          echo "No changes."
-          exit 0
-          elif [ "$code" -eq 2 ]; then
-          echo "Changes present."
-          exit 0
-          else
-          echo "Terraform error."
-          exit 1
-          fi
-          echo "tfplan_exit=$code" >> $GITHUB_OUTPUT
     outputs:
-      exit_code: ${{ steps.plan_tf.outputs.tfplan_exit }}
+      exit_code: ${{ steps.plan.outputs.tfplan_exit }}
 
   deploy:
     environment:
