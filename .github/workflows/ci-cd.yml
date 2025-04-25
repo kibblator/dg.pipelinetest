@@ -22,8 +22,10 @@ jobs:
           exit_code=$?
           if [ "$exit_code" -eq 0 ]; then
             echo "No changes."
+            exit 0
           elif [ "$exit_code" -eq 2 ]; then
             echo "Changes present."
+            exit 0
           else
             echo "Terraform error."
             exit 1
