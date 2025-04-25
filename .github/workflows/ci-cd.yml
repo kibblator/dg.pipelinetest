@@ -18,8 +18,7 @@ jobs:
         run: |
           echo "Planning things"
           (exit $EXIT_CODE)
-          exit_code=$?
-          echo "tfplan_exit=$exit_code" >> $GITHUB_OUTPUT
+          echo "tfplan_exit=$" >> $GITHUB_OUTPUT
         env:
           EXIT_CODE: ${{ github.event.inputs.exit_code }}
     outputs:
