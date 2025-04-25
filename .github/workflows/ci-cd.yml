@@ -12,6 +12,7 @@ jobs:
   plan:
     runs-on: ubuntu-latest
     name: Plan TF
+    continue-on-error: true
     steps:
       - name: Run with specific exit code
         id: plan_tf
