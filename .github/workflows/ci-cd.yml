@@ -21,7 +21,7 @@ jobs:
         run: |
           echo "Planning things"
           ./mock-terraform.sh ${{ github.event.inputs.exit_code }}
-          echo "tfplan_exit=$?" >> $GITHUB_OUTPUT
+          echo "tfplan_exit=$?" >> "$GITHUB_OUTPUT"
         continue-on-error: true
     outputs:
       exit_code: ${{ steps.plan.outputs.tfplan_exit }}
@@ -48,4 +48,5 @@ jobs:
       - name: Deploy TF
         id: deploy_tf
         run: |
+          echo "Output from previous job was: ${{needs.plan.outputs.exit_code}}" 
           echo "Deploying things"
