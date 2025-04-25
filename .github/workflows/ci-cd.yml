@@ -12,6 +12,8 @@ jobs:
   plan:
     runs-on: ubuntu-latest
     name: Plan TF
+    outputs:
+      exit_code: ${{ steps.plan.outputs.tfplan_exit }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,11 +22,10 @@ jobs:
         id: plan
         run: |
           echo "Planning things"
+          set +e
           ./mock-terraform.sh ${{ github.event.inputs.exit_code }}
-          echo "tfplan_exit=${{ github.event.inputs.exit_code }}" >> "$GITHUB_OUTPUT"
+          echo "tfplan_exit=$?" >> "$GITHUB_OUTPUT"
         continue-on-error: true
-    outputs:
-      exit_code: ${{ steps.plan.outputs.tfplan_exit }}
 
   deploy:
     environment:
