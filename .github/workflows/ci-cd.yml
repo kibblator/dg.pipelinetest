@@ -24,8 +24,11 @@ jobs:
           echo "Planning things"
           set +e
           ./mock-terraform.sh ${{ github.event.inputs.exit_code }}
-          echo "tfplan_exit=$?" >> "$GITHUB_OUTPUT"
-          echo "tfplan_exit=$?" >> "$GITHUB_ENV"
+
+          exit_code=$?
+
+          echo "tfplan_exit=exit_code" >> "$GITHUB_OUTPUT"
+          echo "tfplan_exit=exit_code" >> "$GITHUB_ENV"
         continue-on-error: true
 
       - name: Check status code
