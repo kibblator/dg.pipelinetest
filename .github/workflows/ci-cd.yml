@@ -25,7 +25,18 @@ jobs:
           set +e
           ./mock-terraform.sh ${{ github.event.inputs.exit_code }}
           echo "tfplan_exit=$?" >> "$GITHUB_OUTPUT"
+          echo "tfplan_exit=$?" >> "$GITHUB_ENV"
         continue-on-error: true
+
+      - name: Check status code
+        run: |
+          echo "Checking exit code"
+          if [ "$tfplan_exit" -ne "0" ] && [ "$tfplan_exit" -ne "2" ]; then
+            echo "exiting with status $tfplan_exit"
+
+            exit "$tfplan_exit"
+          fi
+          echo "Continuing with pipeline"
 
   deploy:
     environment:
