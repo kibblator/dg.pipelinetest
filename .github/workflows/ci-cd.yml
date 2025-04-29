@@ -27,8 +27,8 @@ jobs:
 
           exit_code=$?
 
-          echo "tfplan_exit=exit_code" >> "$GITHUB_OUTPUT"
-          echo "tfplan_exit=exit_code" >> "$GITHUB_ENV"
+          echo "tfplan_exit=$exit_code" >> "$GITHUB_OUTPUT"
+          echo "tfplan_exit=$exit_code" >> "$GITHUB_ENV"
         continue-on-error: true
 
       - name: Check status code
